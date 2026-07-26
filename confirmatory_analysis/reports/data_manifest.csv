@@ -1,0 +1,11 @@
+path,exists,type,size_mb,sha1_12,purpose,shape,cols
+artifacts/liu/atac_obs.parquet,True,.parquet,6.66,69af56051cca,ATAC per-nucleus metadata (donor/class/region/pathology/covars/QC),"(1217165, 12)","donor,cell_class,subclass,region,pathology,libtype,sex,age,pmi,nFrags,TSSEnrichment,pathology_ord"
+artifacts/liu/atac_Xlsi_harmony.npy,True,.npy,238.56,3cbe224cec51,LSI-Harmony cell embedding (49d),"(1217165, 49)",
+artifacts/liu/z_coast_liu.npy,True,.npy,155.8,0ba9b272c919,COAST cell embedding (32d),"(1217165, 32)",
+artifacts/liu/donor_pseudobulk.npz,True,.npz,32.52,8189aa122949,RNA donor pseudobulk (counts) + donor meta,,"PB,ncells,donors,pathology,sex,age,pmi"
+artifacts/liu/topo_diagrams_coast.pkl,True,.pkl,23.75,88d944ea6e33,"COAST raw H1 diagrams per (class,metric,donor)",1686 keys,
+artifacts/liu/topo_fb_coast.pkl,True,.pkl,2.08,3a1c789885e7,COAST topology feature blocks (PI+scalars) + pseudobulk,24 keys,
+artifacts/liu/benchmark_repeatedCV.csv,True,.csv,0.0,5eb091fe1951,manuscript repeated-CV benchmark table,"(30, 7)","latent,cell_class,repr,balacc,auc,n,n_lateAD"
+artifacts/liu/ccre_keep_idx.npy,True,.npy,0.29,ac83ef47f785,"36,731 informative cCRE indices for COAST","(36731,)",
+docs/MANUSCRIPT.md,True,.md,0.01,cebd0ce377ec,manuscript source (markdown),,
+topoad_manuscript.pdf,True,.pdf,6.3,27da2fb1bbac,compiled manuscript PDF,,

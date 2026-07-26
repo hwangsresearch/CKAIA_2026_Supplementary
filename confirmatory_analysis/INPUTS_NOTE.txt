@@ -1,0 +1,4 @@
+Large empirical inputs (not bundled to keep ZIP small) live in artifacts/liu/:
+  atac_obs.parquet, atac_Xlsi_harmony.npy, z_coast_liu.npy, donor_pseudobulk.npz,
+  topo_diagrams_coast.pkl, topo_diagrams_lsi.pkl, ccre_keep_idx.npy.
+All results/tables/figures in this package were produced from those via src/ (see RUNME.md).

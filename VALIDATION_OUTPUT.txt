@@ -1,0 +1,5 @@
+PASS: packaged headline results are internally consistent.
+- 36 arms; 33 negative M3-M1 AUC point estimates; 0 robust positive arms
+- Mean M3-M1: AUC ≈ -0.094; balanced accuracy ≈ -0.074
+- Matched 200 nuclei: pseudobulk ≈ 0.672 vs topology ≈ 0.526, 6/6 classes
+- Shape-only controls match the reported 2-D and 32-D values

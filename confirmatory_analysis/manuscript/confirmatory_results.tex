@@ -1,0 +1,8 @@
+% Confirmatory result block integrated into the final manuscript.
+% Full arm-level values are in results/tables/paired_differences_{COAST,LSI}.csv.
+
+\subsection{Topology Did Not Show Robust Incremental Value}
+Pseudobulk added clear information beyond covariates: mean AUC for $M_1$ versus $M_0$ was 0.68 versus 0.56 with COAST and 0.76 versus 0.56 with LSI. In contrast, $\Delta\mathrm{AUC}=M_3-M_1$ was negative in 33 of 36 latent--cell-class--distance arms. None of the paired 95\% donor-bootstrap confidence intervals had a lower bound above zero, whereas seven had an upper bound below zero. The three positive point estimates all had intervals spanning zero. These results support absence of robust positive evidence, not exact equivalence for every arm.
+
+\subsection{Matched-Nucleus and Simulation Controls}
+When pseudobulk and COAST--Bures topology used identical sampled nuclei, their mean AUCs across cell classes were 0.613 versus 0.489 at 50 nuclei, 0.590 versus 0.555 at 100, and 0.672 versus 0.526 at 200. At 200 nuclei, pseudobulk outperformed topology in all six cell classes. In a two-dimensional shape-only simulation, pseudobulk remained at chance (AUC 0.477) while Bures and Euclidean topology reached 0.986 and 0.995; embedding the signal in 32 dimensions reduced topology to 0.484--0.540.

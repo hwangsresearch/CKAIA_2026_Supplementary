@@ -1,0 +1,2 @@
+arms,M2_M0_mean_dAUC,M2_M0_positive,M2_M0_lo_gt0,M2_M0_hi_lt0,M3_M1_mean_dAUC,M3_M1_negative,M3_M1_AUC_lo_gt0,M3_M1_AUC_hi_lt0_unadjusted,M3_M1_mean_dBACC,M3_M1_BACC_positive,M3_M1_BACC_lo_gt0,M3_M1_BACC_hi_lt0_unadjusted,max_AUC_upper_bound
+36,0.00028004507973968635,21,0,0,-0.09392630360015108,33,0,7,-0.0742845271321325,5,0,4,0.2624584717607974

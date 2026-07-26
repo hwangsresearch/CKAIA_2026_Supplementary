@@ -1,0 +1,80 @@
+# Frozen outcome-label-controlled evaluation protocol. Precomputed representations are full-cohort; fold-dependent downstream transformations are training-only.
+# Every paired model comparison uses identical donor sets, folds, seeds, classifier settings.
+global_seed: 2026
+
+cohort:
+  source: Liu et al. 2025 ROSMAP multiregion multiome
+  inferential_unit: donor
+  target: {positive: lateAD, negative: nonAD}   # binary; NEVER residualized
+  cell_classes: [Exc, Inh, Ast, Oli, OPC, Mic_Immune]   # Vasc excluded (too few donors)
+  min_nuclei_per_donor_class: 200
+
+outer_cv:
+  scheme: repeated_stratified_kfold
+  folds: 5
+  repeats: 20
+  seed: 2026                # fold assignments derived deterministically per (class) donor set
+  saved_to: results/predictions/folds_{cell_class}.parquet
+
+endpoints:
+  primary: auc
+  secondary: balanced_accuracy
+  threshold_policy: 0.5     # preserved from original pipeline
+
+classifier:
+  estimator: sklearn.linear_model.LogisticRegression
+  # Preserved from the manuscript repeated-CV benchmark (rep_cv): C=1.0, balanced, L2.
+  params: {C: 1.0, penalty: l2, class_weight: balanced, max_iter: 2000, solver: lbfgs}
+  standardize_features: true      # StandardScaler fit on TRAIN donors only, per outer fold
+  hyperparameter_tuning: none     # C fixed a priori -> no nested tuning needed
+
+covariates:                        # donor-level; standardized/encoded on TRAIN only
+  sex: {type: categorical, encode: binary_is_male}
+  age: {type: continuous}          # age_death
+  pmi: {type: continuous}
+  logfrag: {type: continuous, definition: donor-mean of log1p(nFrags)}   # sequencing depth proxy
+  region: excluded                 # no valid donor-level region var (donors span 6 regions)
+
+models:
+  M0: [covariates]
+  M1: [covariates, pseudobulk]
+  M2: [covariates, topology]
+  M3: [covariates, pseudobulk, topology]
+  primary_comparison: M3_minus_M1
+
+representations:
+  latents: [LSI, COAST]            # LSI-Harmony 49d ; COAST 32d
+  fit_scope: full_cohort_outcome_free_precomputed
+  foldwise_retraining: false
+  metrics: [euclidean, cosine, bures]
+  topology_featurization:
+    persistence_image:
+      resolution: 12               # 12x12 = 144
+      weight: persistence
+      fit_scope: outer_train_only  # im_range + bandwidth fit on TRAIN diagrams only, per outer fold
+    scalars: [max_persistence, total_persistence, entropy, count]   # per-diagram, no fitting
+    seeds_averaged: 3
+
+sensitivity:
+  strongest_baseline: {baseline: LSI_pseudobulk, add: COAST_bures_topology}   # secondary
+  residualization:                 # separate sensitivity arm (features residualized on covariates, TRAIN-only)
+    outcome_residualized: false    # NEVER
+  matched_nuclei:
+    subsample_sizes: [50, 100, 200]   # sizes preserving the n>=200 donor set
+    seeds: 3                          # original deterministic seeds (reproducible)
+    stability_seeds_secondary: 10     # COAST-Bures only, labeled secondary
+
+uncertainty:
+  repeat_summary: mean_sd_over_20_repeat_level_estimates    # split-instability descriptor
+  donor_bootstrap:
+    replicates: 10000
+    unit: donor                     # resample donors, NOT folds/nuclei/seeds
+    stratified_by: label
+    paired: true                    # same resampled donors for both models in a pair
+  note: 100 folds are NOT treated as independent; donor bootstrap conditions on fixed cross-fitted predictions and does not refit the pipeline.
+
+simulation:
+  scenarios: [null, mean_shift, shape_only, depth_confound]
+  representative: {donors: 60, lateAD: 15, nuclei_per_donor: 120}
+  datasets_per_condition: 30
+  dims: [low, 32]
